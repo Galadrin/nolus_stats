@@ -125,9 +125,9 @@
                     :key="item.created_at"
                   >
                     <td>{{ item.created_at }}</td>
-                    <td>{{ item.amount.amount }} ${{ item.amount.ticker}}</td>
-                    <td>{{ item.principal_due.amount }} ${{ item.principal_due.ticker}}</td>
-                    <td>{{ item.interest_due.amount }} ${{ item.interest_due.ticker}}</td>
+                    <td>{{ item.amount.amount }} {{ item.amount.ticker}}</td>
+                    <td>{{ item.principal_due.amount }} {{ item.principal_due.ticker}}</td>
+                    <td>{{ item.interest_due.amount }} {{ item.interest_due.ticker}}</td>
                     <td>{{ item.interest_rate }}</td>
                   </tr>
                 </tbody>

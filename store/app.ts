@@ -32,8 +32,8 @@ export const useAppStore = defineStore('appStore', {
             // Sort the data array by principal_due in descending order
             label_data.sort((a, b) => b.principal_due - a.principal_due);
             // Extract the labels and principal_dues from the sorted data
-            const labels = label_data.map(item => item.label.padEnd(10) + String(Number(item.amount / getExposant(item.label)).toFixed(2)));
-            const principal_dues = label_data.map(item => (item.principal_due / 10**6));
+            const labels = label_data.map(item => item.label.padEnd(10) + String(Number(item.amount).toFixed(2)));
+            const principal_dues = label_data.map(item => (item.principal_due));
             
             const ret:totalLoanGraph_t = {
                 labels: labels,
