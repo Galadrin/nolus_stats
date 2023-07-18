@@ -39,16 +39,17 @@ export async function getLeases():Promise<leases_t> {
                     amount: Number(current_interest_due.amount)/getExposant(current_margin_due.ticker.ticker),
                     ticker: current_margin_due.ticker
                 };
+                const adj_interest_rate = interest_rate/10
                 const price = await client.queryContractSmart('nolus1436kxs0w2es6xlqpp9rd35e3d0cjnw4sv8j3a7483sgks29jqwgsv3wzl4', {price:{currency:amount.ticker}})
                 // console.log("add lease from ", user_lease, "open at", created_at)
                 all_leases.push({
                     created_at,
                     amount,
-                    interest_rate,
+                    interest_rate: adj_interest_rate,
                     principal_due,
-                    interest_due    
+                    interest_due
                 });
-                if (!totals_leases[amount.ticker]) { totals_leases[amount.ticker] = {amount: 0, principal_due:0, interest_due:0}}
+                if (!totals_leases[amount.ticker]) { totals_leases[amount.ticker] = {amount: 0, principal_due:0, interest_due:0} }
                     totals_leases[amount.ticker].amount += Number(amount.amount)
                     totals_leases[amount.ticker].amount_usd += Number(amount.amount) * price
                     totals_leases[amount.ticker].principal_due += Number(principal_due.amount)

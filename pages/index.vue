@@ -32,7 +32,7 @@
               <v-card>
                 <div class="d-flex align-center justify-space-between">
                   <v-card-title>Load assets per due</v-card-title>
-                  <v-switch v-model="value" color="primary" label="value" value="1" hide-details></v-switch>
+                  <!-- <v-switch v-model="value" color="primary" label="value" value="1" hide-details></v-switch> -->
                 </div>
                 <v-card-item>
                   <v-container>
@@ -91,49 +91,31 @@
               </v-card>
             </v-col>
           </v-row>
+          <v-spacer></v-spacer>
           <!-- 1st line of widgets -->
-          <v-row>
-            <v-col cols="12">
-              <!--  created_at: number,
-                    amount: any,
-                    interest_rate: number,
-                    principal_due: any,
-                    interest_due: any   -->
-              <v-table height="300px" fixed-header>
-                <thead>
-                  <tr>
-                    <th class="text-left">
-                      block
-                    </th>
-                    <th class="text-left">
-                      amount
-                    </th>
-                    <th class="text-left">
-                      due
-                    </th>
-                    <th class="text-left">
-                      interests
-                    </th>
-                    <th class="text-left">
-                      rate
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="item in appStore.lease_list"
-                    :key="item.created_at"
-                  >
-                    <td>{{ item.created_at }}</td>
-                    <td>{{ item.amount.amount }} {{ item.amount.ticker}}</td>
-                    <td>{{ item.principal_due.amount }} {{ item.principal_due.ticker}}</td>
-                    <td>{{ item.interest_due.amount }} {{ item.interest_due.ticker}}</td>
-                    <td>{{ item.interest_rate }}</td>
-                  </tr>
-                </tbody>
-              </v-table>
-            </v-col>
-          </v-row>
+          <v-data-table
+            :headers="headers"
+            :items="appStore.lease_list"
+            multi-sort="true"
+            class="elevation-1"
+            density="comfortable"
+          >
+            <template v-slot:item.created_at="{ item }">
+                block {{ item.columns.created_at }}
+            </template>
+            <template v-slot:item.amount="{ item }">
+                {{ item.columns.amount.amount }} {{ item.columns.amount.ticker }}
+            </template>
+            <template v-slot:item.principal_due="{ item }">
+                {{ item.columns.principal_due.amount }} {{ item.columns.principal_due.ticker }}
+            </template>
+            <template v-slot:item.interest_due="{ item }">
+                {{ item.columns.interest_due.amount }} {{ item.columns.interest_due.ticker }}
+            </template>
+            <template v-slot:item.interest_rate="{ item }">
+                {{ item.columns.interest_rate }} %
+            </template>
+          </v-data-table>
         </v-container>
       </v-main>
 
@@ -171,6 +153,8 @@
 import { useAppStore } from "@/store/app"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { Pie } from 'vue-chartjs'
+import { VDataTable } from 'vuetify/labs/VDataTable'
+import { v4 as uuid } from 'uuid'
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors)
 
@@ -207,32 +191,115 @@ export default {
               }
             }
         }
+        const headers = [
+        {
+          title: 'Creation block',
+          align: 'start',
+          key: 'created_at',
+        },
+        { title: 'Amount', key: 'amount.amount'},
+        { title: 'Amount ticker', key: 'amount.ticker'},
+        { title: 'Due', key: 'principal_due.amount'},
+        { title: 'Due ticker', key: 'principal_due.ticker'},
+        { title: 'Interest due', key: 'interest_due.amount'},
+        { title: 'Interest ticker', key: 'interest_due.ticker'},
+        { title: 'Interest rate', key: 'interest_rate' },
+      ]
+      const desserts = [
+        {
+          name: 'Frozen Yogurt',
+          calories: 159,
+          fat: 6,
+          carbs: 24,
+          protein: 4,
+          iron: '1%',
+        },
+        {
+          name: 'Ice cream sandwich',
+          calories: 237,
+          fat: 9,
+          carbs: 37,
+          protein: 4.3,
+          iron: '1%',
+        },
+        {
+          name: 'Eclair',
+          calories: 262,
+          fat: 16,
+          carbs: 23,
+          protein: 6,
+          iron: '7%',
+        },
+        {
+          name: 'Cupcake',
+          calories: 305,
+          fat: 3.7,
+          carbs: 67,
+          protein: 4.3,
+          iron: '8%',
+        },
+        {
+          name: 'Gingerbread',
+          calories: 356,
+          fat: 16,
+          carbs: 49,
+          protein: 3.9,
+          iron: '16%',
+        },
+        {
+          name: 'Jelly bean',
+          calories: 375,
+          fat: 0,
+          carbs: 94,
+          protein: 0,
+          iron: '0%',
+        },
+        {
+          name: 'Lollipop',
+          calories: 392,
+          fat: 0.2,
+          carbs: 98,
+          protein: 0,
+          iron: '2%',
+        },
+        {
+          name: 'Honeycomb',
+          calories: 408,
+          fat: 3.2,
+          carbs: 87,
+          protein: 6.5,
+          iron: '45%',
+        },
+        {
+          name: 'Donut',
+          calories: 452,
+          fat: 25,
+          carbs: 51,
+          protein: 4.9,
+          iron: '22%',
+        },
+        {
+          name: 'KitKat',
+          calories: 518,
+          fat: 26,
+          carbs: 65,
+          protein: 7,
+          iron: '6%',
+        },
+      ]
         return { 
+          headers, desserts,
           appStore,
           leaseData, leasePending, leaseRefresh, PieOptions,
           liquidityData, liquidityPending, liquidityError, liquidityRefresh
         }
     },
     components: {
-        Pie
+        Pie,
+        VDataTable
     },
     data: () => ({
-      sample: {
-          created_at: 431411,
-          amount: {
-            amount: "299175478",
-            ticker: "OSMO",
-          },
-          interest_rate: 122,
-          principal_due: {
-            amount: "50924169",
-            ticker: "USDC",
-          },
-          interest_due: {
-            amount: 103051,
-            ticker: "USDC",
-          },
-        }
+      
     }),
     methods: {
       refresh() {
@@ -240,8 +307,7 @@ export default {
         this.liquidityRefresh()
       },
       
-    },
-}
-
+    }
+  }
 
 </script>
