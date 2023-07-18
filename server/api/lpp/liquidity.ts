@@ -38,6 +38,7 @@ export default defineEventHandler(async(event) => {
         balance_nlpn: Number(balance.balance_nlpn.amount)
       }
     }
+    await kv.set<liquidity_t>('liquidity', liquidity, {ex: 60*5}) // expire in 5min
   }
   return liquidity
 })

@@ -6,7 +6,7 @@ export default defineEventHandler(async(event) => {
     if(!leases) {
       leases = await getLeases();
       console.log(leases)
-      await kv.set<leases_t>('leases', leases)
+      await kv.set<leases_t>('leases', leases, {ex: 60*5}) // expire in 5min
     }
     return leases
   })
