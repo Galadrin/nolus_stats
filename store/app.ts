@@ -9,6 +9,19 @@ export const useAppStore = defineStore('appStore', {
         totalLendedDataUSD: {} as totalLoanGraph_t,
     }),
     getters: {
+        liquidity_deposit():string {
+            const total:number = this.liquidity_data.total.balance + this.liquidity_data.total.total_principal_due
+            const total_scale:string = Number(total / 10**6).toFixed(2)
+            return total_scale
+        },
+        liquidity_used():string {
+            const used_scale:string = Number(this.liquidity_data.total.total_principal_due / 10**6).toFixed(2)
+            return used_scale
+        },
+        interest_due():string {
+            const due_scale:string = Number(this.liquidity_data.total.total_interest_due / 10**6).toFixed(2)
+            return due_scale
+        },
         liquidity_ratio():string {
             const total:number = this.liquidity_data.total.balance + this.liquidity_data.total.total_principal_due
             return Number((this.liquidity_data.total.total_principal_due / total)*100).toFixed(2)

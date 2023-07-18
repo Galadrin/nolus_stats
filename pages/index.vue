@@ -54,28 +54,40 @@
 
             <v-col cols="4">
               <v-card title="Liquidity usage">
-                <v-progress-circular v-if="liquidityPending"
-                  indeterminate
-                  color="primary"
-                >
-                </v-progress-circular>
-                <v-progress-circular v-else-if="liquidityError"
-                  :size="175"
-                  :width="30"
-                  :model-value="100"
-                  color="error"
-                >
-                  error
-                </v-progress-circular>
-                <v-progress-circular v-else
-                  :rotate="360"
-                  :size="170"
-                  :width="30"
-                  :model-value="appStore.liquidity_ratio"
-                  color="teal"
-                >
-                  {{ appStore.liquidity_ratio }} %
-                </v-progress-circular>
+                  <v-row>
+                    <v-col cols="6">
+                    <v-progress-circular v-if="liquidityPending"
+                      indeterminate
+                      color="primary"
+                    >
+                    </v-progress-circular>
+                    <v-progress-circular v-else-if="liquidityError"
+                      :size="175"
+                      :width="30"
+                      :model-value="100"
+                      color="error"
+                    >
+                      error
+                    </v-progress-circular>
+                    <v-progress-circular v-else
+                      :rotate="360"
+                      :size="170"
+                      :width="30"
+                      :model-value="appStore.liquidity_ratio"
+                      color="teal"
+                    >
+                      {{ appStore.liquidity_ratio }} %
+                    </v-progress-circular>
+                  </v-col>
+
+                  <v-col cols="6">
+                        <h3>Infos</h3>
+                        <v-divider></v-divider>
+                        <b>total liquidity available: {{ appStore.liquidity_deposit }}</b><br/>
+                        <b>total liquidity used: {{ appStore.liquidity_used }}</b><br/>
+                        <b>total interest due: {{ appStore.interest_due }}</b>
+                  </v-col>
+                </v-row>
               </v-card>
             </v-col>
           </v-row>
