@@ -1,16 +1,17 @@
 import { CosmWasmClient } from "cosmwasm";
+import { types } from "util";
 
 const rpcEndpoint = "https://pirin-cl.nolus.network:26657/"
 const contract_address = 'nolus1wn625s4jcmvk0szpl85rj5azkfc6suyvf75q6vrddscjdphtve8s5gg42f'
 
-export async function getLeases() {
+export async function getLeases():Promise<leases_t> {
     console.log("Get all the leases")
     const client = await CosmWasmClient.connect(rpcEndpoint);
     const wasm_extention = client.getQueryClient().wasm
 
     const leasers = await wasm_extention.getAllContractState(contract_address, undefined);
     const all_lease_addr = [];
-    const all_leases = [];
+    const all_leases = [] as lease[];
     const totals_leases = {};
     //.slice(0, 5) to limit
     await Promise.all(leasers.models.map(async (leaser) => {
@@ -53,4 +54,22 @@ export async function getLeases() {
         leases: all_leases,
         total: totals_leases
     }
+}
+
+export type leases_t = {
+    leases: lease[],
+    total: {
+        amount: Number,
+        amount_usd: Number,
+        principal_due: Number,
+        interest_due: Number
+    }
+}
+
+type lease = {
+    created_at: number,
+    amount: any,
+    interest_rate: Number,
+    principal_due: any,
+    interest_due: any  
 }
