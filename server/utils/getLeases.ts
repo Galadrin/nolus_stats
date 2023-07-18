@@ -59,17 +59,17 @@ export async function getLeases():Promise<leases_t> {
 export type leases_t = {
     leases: lease[],
     total: {
-        amount: Number,
-        amount_usd: Number,
-        principal_due: Number,
-        interest_due: Number
+        amount: number,
+        amount_usd: number,
+        principal_due: number,
+        interest_due: number
     }
 }
 
 type lease = {
     created_at: number,
     amount: any,
-    interest_rate: Number,
+    interest_rate: number,
     principal_due: any,
     interest_due: any  
 }
